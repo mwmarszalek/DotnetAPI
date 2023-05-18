@@ -7,11 +7,21 @@ namespace DotnetAPI.Controllers;
 public class UserController : ControllerBase
 {
 
-   
+    // create an instance of DataContextDapper as private _dapper (hence the underscore)
+    DataContextDapper _dapper;
+    //The below is a constructor that takes the config for appsettings.json using IConfiguration
+    public UserController(IConfiguration config)
+    {   
+        // passing the config to the constructor of DataContextDapper gibing us access to connection string in Dapper
+        _dapper = new DataContextDapper(config);
+    }
 
-    public UserController()
+
+    [HttpGet("TestConnection")]
+    public DateTime TestConnection()
     {
-        
+        // calling LoadDataSingle method from DataContextDapper (assigned to _dapper)
+        return _dapper.LoadDataSignle<DateTime>("SELECT GETDATE()");
     }
 
     [HttpGet("GetUsers/{testValue}")]

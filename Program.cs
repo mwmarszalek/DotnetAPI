@@ -1,3 +1,9 @@
+// dotnet watch run to run the application and listening for changes
+// PACKAGES:
+// dotnet add package dappper
+// dotnet add package automapper
+// dotnet add package Microsoft.Data.SqlClient
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -18,7 +24,8 @@ builder.Services.AddCors((options) =>
                     .AllowCredentials();
             });
         options.AddPolicy("ProdCors", (corsBuilder) => 
-            {
+            {   
+                // later on add domain name here that you are actually going to use:
                 corsBuilder.WithOrigins("https://myProductionSite.com")
                     .AllowAnyMethod()
                     .AllowAnyHeader()
