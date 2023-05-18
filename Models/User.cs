@@ -1,7 +1,7 @@
 
-namespace DotnetAPI.Models
+namespace DotnetAPI
 {
-    public partial class Users
+    public partial class User
     {   
         // if having string type you cannot have a null value. if you do you will get an error. you can fix this by adding ? at the end eg. string? FirstName
         // however this is not a good practice. it is better to sort this out in a constructor (below)
@@ -12,7 +12,7 @@ namespace DotnetAPI.Models
         public string Gender {get; set;}
         public bool Active {get; set;}
 
-        public Users()
+        public User()
         {
             if (FirstName == null)
             {

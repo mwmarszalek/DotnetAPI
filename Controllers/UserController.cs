@@ -11,7 +11,7 @@ public class UserController : ControllerBase
     DataContextDapper _dapper;
     //The below is a constructor that takes the config for appsettings.json using IConfiguration
     public UserController(IConfiguration config)
-    {   
+    {
         // passing the config to the constructor of DataContextDapper gibing us access to connection string in Dapper
         _dapper = new DataContextDapper(config);
     }
@@ -24,11 +24,47 @@ public class UserController : ControllerBase
         return _dapper.LoadDataSignle<DateTime>("SELECT GETDATE()");
     }
 
-    [HttpGet("GetUsers/{testValue}")]
-    // public IEnumerable<User> GetUsers()
-    public string[] GetUsers(string testValue)
+    // This endpoints gets all users:
+    [HttpGet("GetUsers")]
+    public IEnumerable<User> GetUsers()
     {
-        return new string[] {"user1","user2",testValue};
+        string sql = @"
+            SELECT [UserId],
+                [FirstName],
+                [LastName],
+                [Email],
+                [Gender],
+                [Active] 
+            FROM TutorialAppSchema.Users";
+        // here we are calling the LoadData dapper method that we created and passing in the sql string from Azure Studio
+        IEnumerable<User> users = _dapper.LoadData<User>(sql);
+        return users;
+    }
+
+    // This endpoints gets a single user (filtered by userId)
+    [HttpGet("GetSingleUser/{userId}")]
+    public User GetSingleUser(int userId)
+    {
+        string sql = @"
+            SELECT [UserId],
+                [FirstName],
+                [LastName],
+                [Email],
+                [Gender],
+                [Active] 
+            FROM TutorialAppSchema.Users
+            WHERE UserId = " + userId.ToString();
+        // here we are calling the LoadData dapper method that we created and passing in the sql string from Azure Studio
+        User user = _dapper.LoadDataSignle<User>(sql);
+        return user;
+
+    }
+}
+
+
+
+
+  // return new string[] {"user1","user2"};
         // return Enumerable.Range(1, 5).Select(index => new WeatherForecast
         // {
         //     Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
@@ -36,5 +72,3 @@ public class UserController : ControllerBase
         //     Summary = Summaries[Random.Shared.Next(Summaries.Length)]
         // })
         // .ToArray();
-    }
-}
