@@ -21,7 +21,7 @@ public class UserController : ControllerBase
     public DateTime TestConnection()
     {
         // calling LoadDataSingle method from DataContextDapper (assigned to _dapper)
-        return _dapper.LoadDataSignle<DateTime>("SELECT GETDATE()");
+        return _dapper.LoadDataSingle<DateTime>("SELECT GETDATE()");
     }
 
     // This endpoints gets all users:
@@ -55,20 +55,68 @@ public class UserController : ControllerBase
             FROM TutorialAppSchema.Users
             WHERE UserId = " + userId.ToString();
         // here we are calling the LoadData dapper method that we created and passing in the sql string from Azure Studio
-        User user = _dapper.LoadDataSignle<User>(sql);
+        User user = _dapper.LoadDataSingle<User>(sql);
         return user;
+    }
 
+    [HttpPut("EditUser")]
+    public IActionResult EditUser(User user)
+    {
+        string sql = @"
+        UPDATE TutorialAppSchema.Users
+        SET [FirstName] = '" + user.FirstName +
+            "', [LastName] = '" + user.LastName +
+            "', [Email] = '" + user.Email +
+            "', [Gender] = '" + user.Gender +
+            "', [Active] = '" + user.Active +
+        "' WHERE userId = " + user.UserId;
+        Console.WriteLine(sql);
+
+        // check if ExecuteSql returns True, if not throws an error
+        if (_dapper.ExecuteSql(sql))
+        {
+            return Ok();
+        }
+        throw new Exception("Failed to Update User");
+    }
+
+    [HttpPost("AddUser")]
+    public IActionResult AddUser(UserTOAddDto user)
+    {
+
+        string sql = @"INSERT INTO TutorialAppSchema.Users(
+                [FirstName],
+                [LastName],
+                [Email],
+                [Gender],
+                [Active]
+            ) VALUES (" +
+                " '" + user.FirstName +
+            "',  '" + user.LastName +
+            "',  '" + user.Email +
+            "',   '" + user.Gender +
+            "',   '" + user.Active +
+            "')";
+            Console.WriteLine(sql);
+
+         // check if ExecuteSql returns True, if not throws an error
+        if (_dapper.ExecuteSql(sql))
+        {
+            return Ok();
+        }
+        throw new Exception("Failed to Add User");
     }
 }
 
 
 
 
-  // return new string[] {"user1","user2"};
-        // return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        // {
-        //     Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-        //     TemperatureC = Random.Shared.Next(-20, 55),
-        //     Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        // })
-        // .ToArray();
+
+// return new string[] {"user1","user2"};
+// return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+// {
+//     Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+//     TemperatureC = Random.Shared.Next(-20, 55),
+//     Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+// })
+// .ToArray();

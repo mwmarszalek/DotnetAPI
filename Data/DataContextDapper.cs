@@ -23,7 +23,7 @@ namespace DotnetAPI
         }
 
         // Method that loads single piece of data
-        public T LoadDataSignle<T> (string sql)
+        public T LoadDataSingle<T> (string sql)
         {
             IDbConnection dbConnection = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
             return dbConnection.QuerySingle<T>(sql);
