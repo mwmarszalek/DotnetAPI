@@ -3,6 +3,10 @@
 // dotnet add package dappper
 // dotnet add package automapper
 // dotnet add package Microsoft.Data.SqlClient
+// dotnet add package Microsoft.EntityFrameworkCore
+// dotnet add package Microsoft.EntityFrameworkCore.Relational
+// dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+// to check installed packages see DotnetAPI.csproj
 
 var builder = WebApplication.CreateBuilder(args);
 

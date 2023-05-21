@@ -2,7 +2,7 @@
 // inserting new data to table. It is used in our PUT
 
 
-namespace DotnetAPI
+namespace DotnetAPI.Dtos
 {
     public partial class UserTOAddDto
     {   
@@ -13,7 +13,7 @@ namespace DotnetAPI
         public string Gender {get; set;}
         public bool Active {get; set;}
 
-        public UserDto()
+        public UserTOAddDto()
         {
             if (FirstName == null)
             {
