@@ -25,6 +25,8 @@ public class UserEFController : ControllerBase
         {
             // first argument in CreateMap is where we are mapping FROM, second TO
             cfg.CreateMap<UserTOAddDto, User>();
+            cfg.CreateMap<UserSalary, UserSalary>();
+            cfg.CreateMap<UserJobInfo, UserJobInfo>();
         }));
     }
 
@@ -117,17 +119,14 @@ public class UserEFController : ControllerBase
         throw new Exception("Failed to Delete User");
 
     }
+
+    // END ENDPOINTS FOR USERS
+
+    // START ENDPOINTS FOR USERSALARY
+
+
+
+
+
 }
 
-
-
-
-
-// return new string[] {"user1","user2"};
-// return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-// {
-//     Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-//     TemperatureC = Random.Shared.Next(-20, 55),
-//     Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-// })
-// .ToArray();
